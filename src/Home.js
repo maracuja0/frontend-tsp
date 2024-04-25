@@ -1,6 +1,12 @@
 import React from "react";
+import  Slider from './Components/Slider';
+import  Cart from './Components/Cart';
+import  Footer from './Components/Footer';
 
 export const Home=() => (
-
-    <h2> Meow Home</h2>
+    <>
+   <Slider/>
+   <Cart/>
+   <Footer/>
+   </>
 )
