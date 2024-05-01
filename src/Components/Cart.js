@@ -12,8 +12,8 @@ function BasicExample() {
                     Some quick example text to build on the card title and make up the
                     bulk of the card's content.
                 </Card.Text>
-                <Button variant="outline-primary" className="me-2">Like</Button>
-                <Button variant="outline-primary" >In Basket</Button>
+                <Button variant="outline-primary">Сохранить</Button>
+                <Button variant="outline-primary" className="ms-2" > Записаться</Button>
                 </Card.Body>
             </Card>
       </Container>
