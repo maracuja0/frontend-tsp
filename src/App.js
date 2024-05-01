@@ -20,6 +20,7 @@ import  {Basket}  from './Basket';
 function App() {
     // const [data, setData] = useState([]);
 
+    // ВАЖНО! связь с бэком
     // useEffect(() => {
     //     axios
     //         .get("http://localhost:8080/api/user")
@@ -56,17 +57,17 @@ function App() {
     //       <Button>мяу</Button>
     //   </header>
     // </div>
-    <>
-    <Router>
-    <NaviBar/>
-    <Routes>
-      <Route  exact path="/"  element={<Home/>} />
-      <Route path="/account"  element={<Account/>} />
-      <Route path="/liked"  element={<Liked/>} />
-      <Route path="/basket"  element={<Basket/>} />
-    </Routes>
-    </Router>
-    </>
+    <div className="App">
+      <Router>
+        <NaviBar/>
+          <Routes>
+            <Route  exact path="/"  element={<Home/>} />
+            <Route path="/account"  element={<Account/>} />
+            <Route path="/liked"  element={<Liked/>} />
+            <Route path="/basket"  element={<Basket/>} />
+          </Routes>
+      </Router>
+    </div>
   );
 }
 
