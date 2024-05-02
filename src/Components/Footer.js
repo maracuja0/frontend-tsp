@@ -1,20 +1,21 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import {  Row, Col } from 'react-bootstrap';
 
 function Footer() {
   return (
     <footer className="bg-dark   mt-auto text-light py-4">
-      <Container>
+      {/* <Container> */}
         <Row>
           <Col>
-            <p>Контактная информация</p>
+            <p>Контактная информация:</p>
             <ul>
-              <li>Email: example@example.com</li>
-              <li>Телефон: +1234567890</li>
+             <li>Email: paul1ns@yandex.ru; sidvert@yandex.ru</li> 
+             <li>Телефон: 8 (123) 456 78 90</li> 
+              
             </ul>
           </Col>
         </Row>
-      </Container>
+      {/* </Container> */}
     </footer>
   );
 }

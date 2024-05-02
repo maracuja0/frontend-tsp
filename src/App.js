@@ -1,9 +1,10 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 // import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Button, Form, InputGroup } from 'react-bootstrap';
-import axios from 'axios'
+// import axios from 'axios'
 import  NaviBar  from './Components/Navibar';
+import  NotFound  from './Components/NotFound';
 
 import{
   BrowserRouter as Router,
@@ -56,17 +57,21 @@ function App() {
     //       <Button>мяу</Button>
     //   </header>
     // </div>
-    <>
-    <Router>
-    <NaviBar/>
-    <Routes>
-      <Route  exact path="/"  element={<Home/>} />
-      <Route path="/account"  element={<Account/>} />
-      <Route path="/liked"  element={<Liked/>} />
-      <Route path="/basket"  element={<Basket/>} />
-    </Routes>
-    </Router>
-    </>
+    
+    <div className="App">
+      <Router>
+      <NaviBar/>
+      <Routes>
+        <Route  exact path="/"  element={<Home/>} />
+        <Route path="/account"  element={<Account/>} />
+        <Route path="/liked"  element={<Liked/>} />
+        <Route path="/basket"  element={<Basket/>} />
+        <Route path="*"  element={<NotFound/>} />
+      </Routes>
+      
+      </Router>
+    </div>
+    
   );
 }
 
