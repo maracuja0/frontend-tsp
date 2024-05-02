@@ -1,9 +1,10 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 // import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Button, Form, InputGroup } from 'react-bootstrap';
-import axios from 'axios'
+// import axios from 'axios'
 import  NaviBar  from './Components/Navibar';
+import  NotFound  from './Components/NotFound';
 
 import{
   BrowserRouter as Router,
@@ -16,12 +17,10 @@ import  {Home}  from './Home';
 import  {Account}  from './Account';
 import  {Liked}  from './Liked';
 import  {Basket}  from './Basket';
-import Footer from "./Components/Footer";
 
 function App() {
     // const [data, setData] = useState([]);
 
-    // ВАЖНО! связь с бэком
     // useEffect(() => {
     //     axios
     //         .get("http://localhost:8080/api/user")
@@ -66,6 +65,7 @@ function App() {
             <Route path="/account"  element={<Account/>} />
             <Route path="/liked"  element={<Liked/>} />
             <Route path="/basket"  element={<Basket/>} />
+             <Route path="*"  element={<NotFound/>} />
           </Routes>
       </Router>
       <Footer/>

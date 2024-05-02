@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Navbar, Nav, Container, Modal, ButtonGroup, ToggleButton, Form, InputGroup} from "react-bootstrap";
 import {Link} from 'react-router-dom';
 import styled from "styled-components";
-import { useState } from 'react'; 
+import { useState } from 'react';
 // import { Row, Col } from "react-bootstrap";
 
 
@@ -21,7 +21,13 @@ const Styles = styled.div `
     }
 `
 
+
+
+// let role = 0;
+
 export default function NaviBar(){
+
+
 
     const [showModal1, setShowModal1] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
@@ -37,7 +43,7 @@ export default function NaviBar(){
     const [radioValue, setRadioValue] = useState('1');
     
 
-    const [startDate, setStartDate] = useState(new Date());
+    // const [startDate, setStartDate] = useState(new Date());
   
     const radios = [
       { name: 'Участник ', value: '1' },
@@ -100,7 +106,66 @@ export default function NaviBar(){
           </ButtonGroup>
           </div>
           
-          
+         { radioValue === '1' ? (
+            <Form>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail1">
+              <Form.Label>Эл.почта</Form.Label>
+              <InputGroup>
+                <InputGroup.Text>@</InputGroup.Text>
+              <Form.Control type="email" placeholder="Эл.почта" />
+              </InputGroup>
+            </Form.Group>
+
+
+            <Form.Group className="mb-3" controlId="formBasicPassword1">
+              <Form.Label>Пароль</Form.Label>
+              <Form.Control type="password" placeholder="Введите пароль" />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+              <Form.Check type="checkbox" label="Запомнить меня" />
+            </Form.Group>
+
+            <div className="text-center mb-3">
+            <Button variant="primary" type='submit'>
+              Войти
+            </Button>
+            </div>
+
+            </Form>
+
+         ): (
+          <Form>
+
+            <Form.Group className="mb-3" controlId="formBasicEmail2">
+            <Form.Label>Эл.почта</Form.Label>
+              <InputGroup>
+                <InputGroup.Text>@</InputGroup.Text>
+              <Form.Control type="email" placeholder="Эл.почта" />
+              </InputGroup>
+            </Form.Group>
+
+
+            <Form.Group className="mb-3" controlId="formBasicPassword2">
+              <Form.Label>Пароль</Form.Label>
+              <Form.Control type="password" placeholder="Введите пароль" />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+              <Form.Check type="checkbox" label="Запомнить меня" />
+            </Form.Group>
+
+            <div className="text-center mb-3">
+            <Button variant="primary" type='submit'>
+              Войти
+            </Button>
+            </div>
+
+
+          </Form>
+
+          )}
 
         </Modal.Body>
       </Modal>
@@ -137,74 +202,73 @@ export default function NaviBar(){
           </ButtonGroup>
           </div>
 
-           <Form>
+          { radioValue === '1' ? (
 
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Имя</Form.Label>
-            <InputGroup hasValidation>
-              
-              <Form.Control type="name" required isInvalid placeholder="Имя" />
-              <Form.Control.Feedback type="invalid"> Пожалуйста, введите имя </Form.Control.Feedback>
-              </InputGroup> 
+          <Form>
+
+          <Form.Group className="mb-3" controlId="formBasicEmail1">
+            <Form.Label>Имя</Form.Label>
+              <InputGroup hasValidation>
+
+                <Form.Control type="name" required isInvalid placeholder="Имя" />
+                <Form.Control.Feedback type="invalid"> Пожалуйста, введите имя </Form.Control.Feedback>
+                </InputGroup>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="formBasicEmail1">
               <Form.Label>Фамилия</Form.Label> 
               <Form.Control type="name" placeholder="Фамилия" />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="formBasicEmail1">
               <Form.Label>Отчество</Form.Label>
               <Form.Control type="name" placeholder="Отчество" />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Дата рождения</Form.Label>
-                <Form.Control type={"date"}>
+            <Form.Group className="mb-3" controlId="formBasicEmail1">
+              <Form.Label>Дата рождения </Form.Label>
 
-                </Form.Control>
+                <Form.Control type={"date"}/>
+
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Пол</Form.Label>
-            <Form.Check
-                type="radio"
-                label="Мужской"
-                // name="formHorizontalRadios"
-                // id="formHorizontalRadios1"
-              />
+            <Form.Group className="mb-3" controlId="formBasicEmail1">
+              <Form.Label>Пол</Form.Label>
               <Form.Check
-                type="radio"
-                label="Женский"
-                // name="formHorizontalRadios"
-                // id="formHorizontalRadios2"
-              />
-            
+                  type="radio"
+                  label="Мужской"
+
+                />
+                <Form.Check
+                  type="radio"
+                  label="Женский"
+
+                />
             </Form.Group>
             
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Университет</Form.Label>
-            <Form.Select aria-label="Default select example">
-              {/* <option>Open this select menu</option> */}
-               <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </Form.Select>
+            <Form.Group className="mb-3" controlId="formBasicEmail1">
+              <Form.Label>Университет</Form.Label>
+              <Form.Select aria-label="Default select example">
+
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </Form.Select>
             </Form.Group> 
 
 
 
-             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Эл.почта</Form.Label>
-              <InputGroup>
-                <InputGroup.Text>@</InputGroup.Text>
-              <Form.Control type="email" placeholder="Эл.почта" />
-              </InputGroup>
+             <Form.Group className="mb-3" controlId="formBasicEmail1">
+                <Form.Label>Эл.почта</Form.Label>
+                <InputGroup>
+                  <InputGroup.Text>@</InputGroup.Text>
+                <Form.Control type="email" placeholder="Эл.почта" />
+                </InputGroup>
             </Form.Group>
-           
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+
+            <Form.Group className="mb-3" controlId="formBasicPassword1">
               <Form.Label>Пароль</Form.Label>
               <Form.Control type="password" placeholder="Введите пароль" />
             </Form.Group>
@@ -215,11 +279,90 @@ export default function NaviBar(){
             </Form.Group>
 
             <div className="text-center">
-            <Button variant="primary">
-              Зарегистрироваться
-            </Button>
+              <Button variant="primary" type='submit'>
+                Зарегистрироваться
+              </Button>
             </div>
-          </Form>  
+          </Form>
+
+          ) : (
+
+            <Form>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail1">
+              <Form.Label>Имя</Form.Label>
+                <InputGroup hasValidation>
+
+                  <Form.Control type="name" required isInvalid placeholder="Имя" />
+                  <Form.Control.Feedback type="invalid"> Пожалуйста, введите имя </Form.Control.Feedback>
+                  </InputGroup>
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail2">
+                <Form.Label>Фамилия</Form.Label>
+                <Form.Control type="name" placeholder="Фамилия" />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail2">
+                <Form.Label>Отчество</Form.Label>
+                <Form.Control type="name" placeholder="Отчество" />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail2">
+                <Form.Label>Дата рождения</Form.Label>
+                <Form.Control type={"date"}/>
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail2">
+                <Form.Label>Пол</Form.Label>
+                <Form.Check
+                    type="radio"
+                    label="Мужской"
+
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Женский"
+
+                  />
+
+              </Form.Group>
+
+
+              <Form.Group className="mb-3">
+                <Form.Label>Компания</Form.Label>
+                <Form.Control as="textarea" rows={3} />
+              </Form.Group>
+
+
+
+               <Form.Group className="mb-3" controlId="formBasicEmail2">
+                <Form.Label>Эл.почта</Form.Label>
+                <InputGroup>
+                  <InputGroup.Text>@</InputGroup.Text>
+                <Form.Control type="email" placeholder="Эл.почта" />
+                </InputGroup>
+              </Form.Group>
+
+
+              <Form.Group className="mb-3" controlId="formBasicPassword2">
+                <Form.Label>Пароль</Form.Label>
+                <Form.Control type="password" placeholder="Введите пароль" />
+              </Form.Group>
+
+
+              <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                <Form.Check type="checkbox" label="Я ознакомлен(а) и согласен(а) с политикой конфидициальности" />
+              </Form.Group>
+
+              <div className="text-center">
+              <Button variant="primary" type='submit'>
+                Зарегистрироваться
+              </Button>
+              </div>
+            </Form>
+
+          )}
 
         </Modal.Body>
         {/* <Modal.Footer>

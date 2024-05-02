@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import {  Row, Col } from 'react-bootstrap';
 
 
 function Footer() {
@@ -10,7 +10,7 @@ function Footer() {
           <Col>
             <p>Контактная информация</p>
             <ul className={"list-unstyled"}>
-              <li>Email: example@example.com</li>
+                <li>Email: paul1ns@yandex.ru; sidvert@yandex.ru</li>
               <li>Телефон: +1234567890</li>
             </ul>
           </Col>
