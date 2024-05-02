@@ -3,27 +3,25 @@ import { Button, Navbar, Nav, Container, Modal, ButtonGroup, ToggleButton, Form,
 import {Link} from 'react-router-dom';
 import styled from "styled-components";
 import { useState } from 'react'; 
-import DatePicker from "react-datepicker";
 // import { Row, Col } from "react-bootstrap";
-import "react-datepicker/dist/react-datepicker.css";
 
 
 const Styles = styled.div `
-    a, navbar-brand, .navbar-nav, .nav-link {
+    a, .navbar-nav, .nav-link {
         color:  #adb1b8;
         &:hover{
-            color: violet
+            color: violet;
+        }
+    }
+    .logo{
+        color: violet;
+        &:hover{
+            color: blueviolet;
         }
     }
 `
 
-
-
-// let role = 0;
-
 export default function NaviBar(){
-
-
 
     const [showModal1, setShowModal1] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
@@ -54,11 +52,13 @@ export default function NaviBar(){
     <Styles>
         <Navbar collapseOnSelect expand ="lg" bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand  style={{ color: ' violet' }}>SIDVERT_L1NS</Navbar.Brand> 
+                <Navbar.Brand>
+                    <Link className={"text-decoration-none"} to={"/"}>SIDVERT_L1NS</Link>
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav>
-                        <Nav.Link>  <Link to="/" style={{ textDecoration: 'none' }}>Главное</Link>  </Nav.Link>
+                        {/*<Nav.Link>  <Link to="/" style={{ textDecoration: 'none' }}>Главное</Link>  </Nav.Link>*/}
                         <Nav.Link>  <Link to="/account" style={{ textDecoration: 'none' }}>Аккаунт</Link>   </Nav.Link>
                         <Nav.Link>  <Link to="/liked" style={{ textDecoration: 'none' }}>Избранное</Link>  </Nav.Link>
                         <Nav.Link>  <Link to="/basket" style={{ textDecoration: 'none' }}>Корзина</Link>  </Nav.Link>
@@ -159,20 +159,10 @@ export default function NaviBar(){
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Дата рождения (MM-DD-YYYY)</Form.Label>
-              <div className="me-auto">
-              
-                <Container>
-                
-                  <DatePicker
-                    
-                    selected={startDate}
-                    onChange={date => setStartDate(date)}
-                   />
-                      
-                  </Container>
-                
-              </div>
+            <Form.Label>Дата рождения</Form.Label>
+                <Form.Control type={"date"}>
+
+                </Form.Control>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">

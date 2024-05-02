@@ -16,6 +16,7 @@ import  {Home}  from './Home';
 import  {Account}  from './Account';
 import  {Liked}  from './Liked';
 import  {Basket}  from './Basket';
+import Footer from "./Components/Footer";
 
 function App() {
     // const [data, setData] = useState([]);
@@ -67,6 +68,7 @@ function App() {
             <Route path="/basket"  element={<Basket/>} />
           </Routes>
       </Router>
+      <Footer/>
     </div>
   );
 }
