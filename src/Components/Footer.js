@@ -11,7 +11,7 @@ function Footer() {
             <p>Контактная информация</p>
             <ul className={"list-unstyled"}>
                 <li>Email: paul1ns@yandex.ru; sidvert@yandex.ru</li>
-              <li>Телефон: +1234567890</li>
+                <li>Телефон: +1234567890</li>
             </ul>
           </Col>
         </Row>
