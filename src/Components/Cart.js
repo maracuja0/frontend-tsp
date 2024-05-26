@@ -1,6 +1,7 @@
 import {Card, Button, Container} from 'react-bootstrap';
 import _header from '../_header.png'
 import heartIcon from './HeartIcon'
+import styled from "styled-components";
 
 function BasicExample() {
     return (
@@ -23,7 +24,7 @@ function BasicExample() {
         <Card.Img variant="top" src={_header} />
         <Card.Body>
             <Card.Title>Card Title</Card.Title>
-            <Card.Text>
+            <Card.Text >
                 Some quick example text to build on the card title and make up the
                 bulk of the card's content.
             </Card.Text>
