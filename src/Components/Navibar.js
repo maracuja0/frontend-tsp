@@ -67,7 +67,7 @@ export default function NaviBar(){
                         {/*<Nav.Link>  <Link to="/" style={{ textDecoration: 'none' }}>Главное</Link>  </Nav.Link>*/}
                         <Nav.Link>  <Link to="/account" style={{ textDecoration: 'none' }}>Аккаунт</Link>   </Nav.Link>
                         <Nav.Link>  <Link to="/liked" style={{ textDecoration: 'none' }}>Избранное</Link>  </Nav.Link>
-                        <Nav.Link>  <Link to="/basket" style={{ textDecoration: 'none' }}>Корзина</Link>  </Nav.Link>
+                        
 
                     </Nav>
                     <Nav className="ms-auto">
