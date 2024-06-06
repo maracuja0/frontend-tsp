@@ -181,6 +181,7 @@ export default function NaviBar() {
 
     const { setUserInfo } = useGlobalContext();
     const { setCreatorInfo } = useGlobalContext();
+
     const handleUserLoginSubmit = (event) => {
         event.preventDefault();
         axios
@@ -232,7 +233,7 @@ export default function NaviBar() {
                             <Nav>
                                 <Nav.Link as={Link} to="/account" className="text-decoration-none">Аккаунт</Nav.Link>
                                 <Nav.Link as={Link} to="/liked" className="text-decoration-none">Избранное</Nav.Link>
-                                <Nav.Link as={Link} to="/basket" className="text-decoration-none">Корзина</Nav.Link>
+                                {/*<Nav.Link as={Link} to="/basket" className="text-decoration-none">Корзина</Nav.Link>*/}
                             </Nav>
                             <Nav className="ms-auto">
                                 <Button variant="outline-info" onClick={handleShowModal1}>Войти</Button>

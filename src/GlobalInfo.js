@@ -2,7 +2,7 @@
 import React, { createContext, useState, useContext } from 'react';
 
 // Создаем контекст
-const GlobalContext = createContext();
+const GlobalContext = createContext(undefined);
 
 // Создаем провайдер для контекста
 export const GlobalProvider = ({ children }) => {

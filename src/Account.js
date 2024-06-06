@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Card, Button, Form, Row, Col, Container, Modal, ButtonGroup, ToggleButton, InputGroup} from "react-bootstrap";
 import 'react-tabulator/lib/styles.css'; // required styles
 import 'react-tabulator/lib/css/tabulator_materialize.min.css'; // theme
@@ -9,11 +9,11 @@ import './GlobalInfo'
 import {useGlobalContext} from "./GlobalInfo";
 
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import _header from './_header.png';
 
 import LikedCard from "./Components/LikedCard";
-// import CardComponent from "./Components/Cart";
+import CardComponent from "./Components/Cart";
 
 
 let rowClickHandler;
@@ -25,37 +25,58 @@ const userColumns = [
     { title: "Статус", field: "status", hozAlign: "center",}
 ];
 
-// let userData = [
-//     {num:1, name:"Хакатон в Сочи", date: "2024-04-04", status: "В обработке"},
-//     {num:2, name:"Хакатон в Самаре", date: "2024-10-14", status: "Принята"},
-//     {num:3, name:"Хакатон в Уфе", date: "2024-12-12", status: "Отклонена"},
-// ];
+//
+// let modalAddPosition = (
+//     <Modal show={false}>
+//
+//         <Modal.Header closeButton>
+//         <Modal.Title >Новый хакатон</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//             <Form>
+//                 <Form.Group className="mb-3" >
+//                     <Form.Label>Название</Form.Label>
+//                     <InputGroup>
+//                         <Form.Control type="name" placeholder="Название" />
+//                     </InputGroup>
+//                 </Form.Group>
+//
+//                 <Form.Group className="mb-3">
+//                     <Form.Label>Описание</Form.Label>
+//                     <Form.Control type={"text"}>
+//
+//                     </Form.Control>
+//                 </Form.Group>
+//
+//                 <Form.Group className="mb-3">
+//                     <Form.Label>Дата проведения</Form.Label>
+//                     <Form.Control type={"date"}>
+//
+//                     </Form.Control>
+//                 </Form.Group>
+//
+//                 <Form.Group className="mb-3" >
+//                     <Form.Label>Ссылка на другой источник</Form.Label>
+//                     <InputGroup>
+//                         <Form.Control type="text" placeholder="ссылка" />
+//                     </InputGroup>
+//                 </Form.Group>
+//
+//                 <div className="text-center">
+//                     <Button variant="primary" onClick={handleAddHack}>
+//                         Создать
+//                     </Button>
+//                 </div>
+//             </Form>
+//         </Modal.Body>
+//     </Modal>
+// )*/
 
-const adminColumns = [
-    {title: "№", field: "num", width: 30},
-    { title: "Название", field: "name" },
-    { title: "Дата", field: "date", width: 150 },
-    { title: "Статус", field: "status"},
-    {
-        title: "Действие",
-        field: "action",
-    }
-];
-
-
-
-let role = {
-    1: "User",
-    2: "Admin"
-}
-
-let curRole = 2;
-
-function UserAccount ({ role, curRole }) {
+function UserAccount({userInfo}){
     const [userData, setUserData] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/user/${userId}/booking`)
+        axios.get(`http://localhost:8080/api/user/${userInfo.id}/booking`)
             .then(response => {
                 const fetchedData = response.data;
                 console.log(response.data)
@@ -78,24 +99,21 @@ function UserAccount ({ role, curRole }) {
     };
 
     return (
-        <div style={{ overflow: "hidden" }}>
-            <h1 className="ms-4 mt-4">Доброго дня, {role[curRole]}</h1>
+        <div style={{overflow: "hidden"}}>
+            <h1 className="ms-4 mt-4">Доброго дня, {userInfo.firstName}</h1>
             <Container className={"pt-3 d-flex flex-wrap justify-content-center"}>
                 <Card className={"m-2 w-100"}>
                     <Card.Header as="h5">Заявки</Card.Header>
                     <Card.Body>
-                        <ReactTabulator columns={userColumns} data={userData} events={{ rowClick: rowClickHandler }} />
+                        <ReactTabulator columns={userColumns} data={userData} events={{rowClick: rowClickHandler}}/>
                     </Card.Body>
                 </Card>
             </Container>
         </div>
-    );
-};
+    )
+}
 
-let creatorId=1;
-/*
-
-function AdminAccount({ role, curRole }){ //ДОДЕЛАТЬ
+function AdminAccount({creatorInfo, bookingStatuses}){
     const [showModal, setShowModal] = useState(false);
 
     const handleCloseModal = () => setShowModal(false);
@@ -103,9 +121,69 @@ function AdminAccount({ role, curRole }){ //ДОДЕЛАТЬ
 
     const [creatorPositionsData, setCreatorPositionsData] = useState([]);
 
+    const [adminColumns, setAdminColumns] = useState([]);
+
+    useEffect(() => {
+        // Проверяем, что bookingStatuses не пустой
+        if (bookingStatuses.length !== 0) {
+            let statuses = []
+            bookingStatuses.map(status => statuses.push({
+                    label:status.name,
+                    value:status.id,
+                }))
+            console.log(statuses)
+            const columns = [
+                { title: "№", field: "num", width: 30 },
+                { title: "Название", field: "positionId.name" },
+                { title: "Дата", field: "date", width: 150 },
+                { title: "Пользователь", field: "userId.email" },
+                { title: "Статус", field: "bookingStatusId.name" },
+                {
+
+                    editor: "select",
+                    editorParams: {
+                        allowEmpty: false,
+                        showListOnEmpty: true,
+                        showListOnUpDownKeys: true,
+                        freetext: false,
+                        sortValuesList: "asc",
+                        values: statuses,
+                    },
+                    field: "newStatus",
+                    title: "Новый статус",
+                    width: 150
+                },
+                {
+                    title: "Действие",
+                    field: "action",
+                    formatter: cell => {
+                        const button = document.createElement("button");
+                        button.innerText = "Отправить";
+                        // button.addEventListener("click", () => handleAction(cell.getRow().getData()));
+                        return button;
+                    },
+                }
+            ];
+            setAdminColumns(columns);
+        }
+    }, [bookingStatuses]);
+    /*const [bookingStatuses, setBookingStatuses] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/booking-status')
+            .then(response => {
+                // console.log(response.data)
+                setBookingStatuses(response.data); // Установка полученного списка статусов в состояние компонента
+            })
+            .catch(error => {
+                console.error('Error fetching booking statuses:', error);
+            })
+    }, []);*/
+
+
     useEffect(() => {//для позиций
         axios
-            .get(`http://localhost:8080/api/creator/${creatorId}/positions`)
+            .get(`http://localhost:8080/api/creator/${creatorInfo.id}/positions`)
             .then((response) => {
                 console.log(response.data)
                 setCreatorPositionsData(response.data);
@@ -120,7 +198,7 @@ function AdminAccount({ role, curRole }){ //ДОДЕЛАТЬ
 
     useEffect(() => {//для таблицы
         axios
-            .get(`http://localhost:8080/api/creator/${creatorId}/positions`)
+            .get(`http://localhost:8080/api/creator/${creatorInfo.id}/bookings`)
             .then((response) => {
                 console.log(response.data)
                 setCreatorTableData(response.data);
@@ -141,33 +219,50 @@ function AdminAccount({ role, curRole }){ //ДОДЕЛАТЬ
         categories: []
     });
 
+
+
+    const [addHackData, setAddHackData] = useState(
+{
+            name: "",
+            description: "",
+            type: false,
+            link: "",
+            creatorId:
+                {
+                    id: creatorInfo.id
+                },
+            date: "",
+            categories: []
+        }
+    )
+
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormData(prevData => ({
+        setAddHackData(prevData => ({
             ...prevData,
             [name]: value
         }));
     };
-
-    const handleSubmit = async () => {
-        try {
-            const response = await axios.post('/api/hackathons', formData);
-            console.log('Хакатон успешно добавлен в базу данных:', response.data);
-            // Очистить форму после успешной отправки
-            setFormData({
-                name: "",
-                description: "",
-                type: false,
-                link: "",
-                creatorId: {},
-                date: "",
-                categories: []
+    const handleAddHack = (event) => {
+        console.log(addHackData)
+        event.preventDefault();
+        axios
+            .post("http://localhost:8080/api/positions/create", addHackData)
+            .then((response) => {
+                // console.log(response.data)
+                // console.log("CreatorInfo", response.data)
+                if(response.data.length !== 0 ){
+                    // setCreatorInfo(response.data);
+                    handleCloseModal();
+                }else{
+                    console.log("Данных нет")
+                }
+            })
+            .catch((error) => {
+                console.log(error);
             });
-            handleCloseModal();
-        } catch (error) {
-            console.error('Произошла ошибка при добавлении хакатона:', error);
-        }
-    }
+        handleCloseModal();
+    };
 
     const handleCreatorIdChange = (event) => {
         const { value } = event.target;
@@ -180,207 +275,140 @@ function AdminAccount({ role, curRole }){ //ДОДЕЛАТЬ
         }));
     };
 
+    // const adminColumns = [
+    //     {title: "№", field: "num", width: 30},
+    //     { title: "Название", field: "positionId.name" },
+    //     { title: "Дата", field: "date", width: 150 },
+    //     { title: "Пользователь", field: "userId.email"},
+    //     { title: "Статус", field: "bookingStatusId.name"},
+    //     {
+    //         editor: "select",
+    //         editorParams: {
+    //             values: bookingStatuses.map(status => status.id)
+    //         },
+    //         field: "newStatus",
+    //         title: "Новый статус",
+    //         width: 150
+    //     },
+    //     {
+    //         title: "Действие",
+    //         field: "action",
+    //         formatter: cell => {
+    //             const button = document.createElement("button");
+    //             button.innerText = "Отправить";
+    //             // button.addEventListener("click", () => handleAction(cell.getRow().getData()));
+    //             return button;
+    //         },
+    //     }
+    // ];
 
-    return(
+    if(bookingStatuses.length !== 0){
+        return (
+            <div style={{overflow: "hidden"}}>
+                <h1 className="ms-4 mt-4">Доброго дня, {creatorInfo.firstName}</h1>
+                <Container className={"pt-3 d-flex flex-wrap justify-content-center"}>
+                    <Card className={"m-2 w-100"}>
+                        <Card.Header as="h5">Мои Хакатоны</Card.Header>
+                        <Container className={"pt-3 d-flex flex-wrap justify-content-center"}>
+                            {creatorPositionsData.map((position) => (
+                                <LikedCard
+                                    //   key={liked.user_id}
+                                    title={position.name}
+                                    text={position.description}
+                                    imgUrl={_header}
+                                />
+                            ))}
+                        </Container>
+                        <Button variant={"outline-primary"} onClick={handleShowModal}>Добавить новый</Button>
 
-        <div style={{overflow: "hidden"}}>
-            <h1 className="ms-4 mt-4">Доброго дня, {role[curRole]}</h1>
-            <Container className={"pt-3 d-flex flex-wrap justify-content-center"}>
-                <Card className={"m-2 w-100"}>
-                    <Card.Header as="h5">Мои Хакатоны</Card.Header>
-                    <Container className={"pt-3 d-flex flex-wrap justify-content-center"}>
-                        {creatorPositionsData.map((position) => (
-                            <LikedCard
-                                //   key={liked.user_id}
-                                title={position.name}
-                                text={position.description}
-                                imgUrl={_header}
+                        <Modal  show={showModal} onHide={handleCloseModal}>
 
+                            <Modal.Header closeButton>
+                                <Modal.Title >Новый хакатон</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Название</Form.Label>
+                                        <InputGroup>
+                                            {/* <Form.Control type="name" placeholder="Название" /> */}
+                                            <Form.Control type="name" name="name" value={addHackData.name} onChange={handleChange} placeholder="Название" />
+                                        </InputGroup>
+                                    </Form.Group>
 
-                            />
-                        ))}
-                    </Container>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Описание</Form.Label>
+                                        {/* <Form.Control type={"text"}> */}
+                                        <Form.Control type={"text"} name="description" value={addHackData.description} onChange={handleChange} placeholder="Описание" />
 
-                    <Button variant="outline-primary" onClick={handleShowModal}>Добавить новый</Button>
+                                    </Form.Group>
 
-                    <Modal  show={showModal} onHide={handleCloseModal}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Дата проведения</Form.Label>
+                                        {/* <Form.Control type={"date"}/> */}
+                                        <Form.Control type={"date"} name="date" value={addHackData.date} onChange={handleChange} />
 
-                        <Modal.Header closeButton>
-                            <Modal.Title >Новый хакатон</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form>
-                                <Form.Group className="mb-3" >
-                                    <Form.Label>Название</Form.Label>
-                                    <InputGroup>
-                                        {/!* <Form.Control type="name" placeholder="Название" /> *!/}
-                                        <Form.Control type="name" name="name" value={formData.name} onChange={handleChange} placeholder="Название" />
-                                    </InputGroup>
-                                </Form.Group>
+                                    </Form.Group>
 
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Описание</Form.Label>
-                                    {/!* <Form.Control type={"text"}> *!/}
-                                    <Form.Control type={"text"} name="description" value={formData.description} onChange={handleChange} placeholder="Описание" />
-
-                                </Form.Group>
-
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Дата проведения</Form.Label>
-                                    {/!* <Form.Control type={"date"}/> *!/}
-                                    <Form.Control type={"date"} name="date" value={formData.date} onChange={handleChange} />
-
-                                </Form.Group>
-
-                                <Form.Group className="mb-3" >
-                                    <Form.Label>Ссылка на другой источник</Form.Label>
-                                    <InputGroup>
-                                        {/!* <Form.Control type="text" placeholder="ссылка" /> *!/}
-                                        <Form.Control type="text" name="link" value={formData.link} onChange={handleChange} placeholder="Ссылка" />
-                                    </InputGroup>
-                                </Form.Group>
-*/
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ссылка на другой источник</Form.Label>
+                                        <InputGroup>
+                                            {/* <Form.Control type="text" placeholder="ссылка" /> */}
+                                            <Form.Control type="text" name="link" value={addHackData.link} onChange={handleChange} placeholder="Ссылка" />
+                                        </InputGroup>
+                                    </Form.Group>
 
 
 
-                                let modalAddPosition = (
-    <Modal show={false}>
-
-        <Modal.Header closeButton>
-        <Modal.Title >Новый хакатон</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <Form>
-                <Form.Group className="mb-3" >
-                    <Form.Label>Название</Form.Label>
-                    <InputGroup>
-                        <Form.Control type="name" placeholder="Название" />
-                    </InputGroup>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                    <Form.Label>Описание</Form.Label>
-                    <Form.Control type={"text"}>
-
-                    </Form.Control>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                    <Form.Label>Дата проведения</Form.Label>
-                    <Form.Control type={"date"}>
-
-                    </Form.Control>
-                </Form.Group>
-
-                <Form.Group className="mb-3" >
-                    <Form.Label>Ссылка на другой источник</Form.Label>
-                    <InputGroup>
-                        <Form.Control type="text" placeholder="ссылка" />
-                    </InputGroup>
-                </Form.Group>
-
-                <div className="text-center">
-                    <Button variant="primary">
-                        Создать
-                    </Button>
-                </div>
-            </Form>
-        </Modal.Body>
-    </Modal>
-)
-
-let userAccount = (userInfo)=> {
-    return (
-        <div style={{overflow: "hidden"}}>
-            <h1 className="ms-4 mt-4">Доброго дня, {userInfo.firstName}</h1>
-            <Container className={"pt-3 d-flex flex-wrap justify-content-center"}>
-                <Card className={"m-2 w-100"}>
-                    <Card.Header as="h5">Избранное</Card.Header>
-                    <Card.Body>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Row className="overflow-auto">
-                                <Col style={{display: 'inline-block', minWidth: '250px', padding: '10px'}}>
-                                    <Link to={"/liked"} style={{textDecoration: 'none'}}>
-                                        <LikedCard/>
-                                    </Link>
-                                </Col>
-                                <Col style={{display: 'inline-block', minWidth: '250px', padding: '10px'}}>
-                                    <Link to={"/liked"} style={{textDecoration: 'none'}}>
-                                        <LikedCard/>
-                                    </Link>
-                                </Col>
-                                <Col style={{display: 'inline-block', minWidth: '250px', padding: '10px'}}>
-                                    <Link to={"/liked"} style={{textDecoration: 'none'}}>
-                                        <LikedCard/>
-                                    </Link>
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                    </Card.Body>
-                </Card>
-                <Card className={"m-2 w-100"}>
-                    <Card.Header as="h5">Заявки</Card.Header>
-                    <Card.Body>
-                        <ReactTabulator columns={userColumns} data={userData} events={{rowClick: rowClickHandler}}/>
-                    </Card.Body>
-                </Card>
-            </Container>
-        </div>
-    )
-}
-
-let adminAccount =(creatorInfo)=> {
-    return (
-        <div style={{overflow: "hidden"}}>
-            <h1 className="ms-4 mt-4">Доброго дня, {creatorInfo.firstName}</h1>
-            <Container className={"pt-3 d-flex flex-wrap justify-content-center"}>
-                <Card className={"m-2 w-100"}>
-                    <Card.Header as="h5">Мои Хакатоны</Card.Header>
-                    <Card.Body>
-                        <Button variant="primary">Добавить новый</Button>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Row className="overflow-auto">
-                                <Col style={{display: 'inline-block', minWidth: '250px', padding: '10px'}}>
-                                    <Link to={"/liked"} style={{textDecoration: 'none'}}>
-                                        <LikedCard/>
-                                    </Link>
-                                </Col>
-                                <Col style={{display: 'inline-block', minWidth: '250px', padding: '10px'}}>
-                                    <Link to={"/liked"} style={{textDecoration: 'none'}}>
-                                        <LikedCard/>
-                                    </Link>
-                                </Col>
-                                <Col style={{display: 'inline-block', minWidth: '250px', padding: '10px'}}>
-                                    <Link to={"/liked"} style={{textDecoration: 'none'}}>
-                                        <LikedCard/>
-                                    </Link>
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                    </Card.Body>
-                </Card>
-                <Card className={"m-2 w-100"}>
-                    <Card.Header as="h5">Заявки</Card.Header>
-                    <Card.Body>
-                        <ReactTabulator columns={adminColumns} data={adminData} events={{rowClick: rowClickHandler}}/>
-                    </Card.Body>
-                </Card>
-            </Container>
-        </div>
-    )
+                                    <div className="text-center">
+                                        <Button variant="primary" onClick={handleAddHack}>
+                                            Создать
+                                        </Button>
+                                    </div>
+                                </Form>
+                            </Modal.Body>
+                        </Modal>
+                    </Card>
+                    <Card className={"m-2 w-100"}>
+                        <Card.Header as="h5">Заявки</Card.Header>
+                        <Card.Body>
+                            <ReactTabulator columns={adminColumns} data={creatorTableData} events={{rowClick: rowClickHandler}}/>
+                        </Card.Body>
+                    </Card>
+                </Container>
+            </div>
+        )
+    }
 }
 
 
 export const Account = () => {
     const {userInfo, setUserInfo} = useGlobalContext();
     const {creatorInfo, setCreatorInfo} = useGlobalContext();
+    const [loading, setLoading] = useState(true); // Добавлено локальное состояние для отслеживания загрузки данных
+    const [bookingStatuses, setBookingStatuses] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/booking-status')
+            .then(response => {
+                // console.log(response.data)
+                setBookingStatuses(response.data); // Установка полученного списка статусов в состояние компонента
+            })
+            .catch(error => {
+                console.error('Error fetching booking statuses:', error);
+            })
+            .finally(() => {
+                setLoading(false); // Устанавливаем loading в false после получения данных
+            });
+    }, []);
+
 
     if (userInfo !== null && userInfo !== undefined && userInfo.size !== 0) {
         // return (curRole === 2) ? userAccount(userInfo) : adminAccount(creatorInfo)
-        return userAccount(userInfo)
+        return <UserAccount userInfo={userInfo}/>
     }
-    else if (creatorInfo !== null && creatorInfo !== undefined ) {
-        return adminAccount(creatorInfo)
+    else if (creatorInfo !== null && creatorInfo !== undefined && !loading) {
+        return <AdminAccount creatorInfo = {creatorInfo} bookingStatuses={bookingStatuses}/>
     }
     else
     {

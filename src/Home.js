@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import  Slider from './Components/Slider';
-import  Cart from './Components/Cart';
+// import  Cart from './Components/Cart';
 //import  Footer from './Components/Footer';
 import {Container} from "react-bootstrap";
 import axios from 'axios'
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import CardComponent from "./Components/Cart";
 import _header from './_header.png'
 

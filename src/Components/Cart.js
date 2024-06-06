@@ -7,45 +7,47 @@ import { Link } from 'react-router-dom';
 
 import axios from 'axios'
 import { useState, useEffect } from 'react';
-
-// function BasicExample() {
-//     return (
-        // <Container className={"p-2"}>
-        //     <Card style={{ width: '18rem' }}>
-        //         <Card.Img variant="top" src={_header} />
-        //         <Card.Body>
-        //             <Card.Title>Card Title</Card.Title>
-        //             <Card.Text>
-        //                 Some quick example text to build on the card title and make up the
-        //                 bulk of the card's content.
-        //             </Card.Text>
-        //             <Button variant="outline-primary">Сохранить</Button>
-        //             <Button variant="outline-primary" className="ms-2" > Записаться</Button>
-        //         </Card.Body>
-        //     </Card>
-        // </Container>
-
-//     <Card className={"m-2"} style={{ width: '18rem' }}>
-//         <Card.Img variant="top" src={_header} />
-//         <Card.Body>
-//             <Card.Title>Card Title</Card.Title>
-//             <Card.Text >
-//                 Some quick example text to build on the card title and make up the
-//                 bulk of the card's content.
-//             </Card.Text>
-//             <Button variant="outline-primary">
-//                 Сохранить
-//             </Button>
-//             <Button variant="outline-primary" className="ms-2" > Записаться</Button>
-//         </Card.Body>
-//     </Card>
-//     );
-//   }
-
-//   export default BasicExample;
+import {useGlobalContext} from "../GlobalInfo";
 
 function CardComponent({id, title, text, imgUrl }) {
+    const { userInfo, setUserInfo } = useGlobalContext();
 
+    const handleAddLiked = (event) => {
+        event.preventDefault();
+        if (userInfo && userInfo.id) {
+            axios
+                .post(`http://localhost:8080/api/user/${userInfo.id}/addLiked/${id}`)
+                .then((response) => {
+                    console.log("DOBAVLENO")
+                    // if(response.data.length !== 0 ){
+                    //     setUserInfo(response.data);
+                    // }else{
+                    //     console.log("Данных нет")
+                    // }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    };
+        const handleAddBooking = (event) => {
+            event.preventDefault();
+            if (userInfo && userInfo.id) {
+                axios
+                    .post(`http://localhost:8080/api/user/${userInfo.id}/addBooking/${id}`)
+                    .then((response) => {
+                        console.log("DOBAVLENO2")
+                        // if(response.data.length !== 0 ){
+                        //     setUserInfo(response.data);
+                        // }else{
+                        //     console.log("Данных нет")
+                        // }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        };
 
     return (
         // <Link to={`/position_page/${id}`} className='text-decoration-none'>
@@ -60,10 +62,10 @@ function CardComponent({id, title, text, imgUrl }) {
                 </Card.Body>
                 </Link>
                 <Card.Body>
-                    <Button variant="outline-primary">
+                    <Button variant="outline-primary" onClick={handleAddLiked}>
                         Сохранить
                     </Button>
-                    <Button variant="outline-primary" className="ms-2"> Записаться</Button>
+                    <Button variant="outline-primary" className="ms-2" onClick={handleAddBooking}> Записаться</Button>
                 </Card.Body>
 
             </Card>

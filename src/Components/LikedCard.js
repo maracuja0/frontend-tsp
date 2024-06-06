@@ -3,8 +3,6 @@ import {Card} from 'react-bootstrap';
 
 function LikedCard({ title, text, imgUrl }) {
     return (
-      
-
         <Card className="m-2" style={{ width: '18rem',height: '25rem'  }}>
         
         <Card.Img variant="top" src={imgUrl} />

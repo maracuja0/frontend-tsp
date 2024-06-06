@@ -19,7 +19,7 @@ import  {Account}  from './Account';
 import  Liked  from './Liked';
 
 import Footer from "./Components/Footer";
-import {GlobalProvider} from "./GlobalInfo";
+import {GlobalProvider, useGlobalContext} from "./GlobalInfo";
 import CardPage from './CardPage';
 
 
@@ -29,61 +29,26 @@ import CardPage from './CardPage';
 
 
 
-
 function App() {
-    // const [data, setData] = useState([]);
-
-    // useEffect(() => {
-    //     axios
-    //         .get("http://localhost:8080/api/user")
-    //         .then((response) => {
-    //             setData(response.data);
-    //             console.log(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // }, []);
 
 
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edited by Paul1ns & Maracuja0
-    //     </p>
-    //     <h1>
-    //        meow
-    //     </h1>
-
-    //     <InputGroup> 
-    //       <InputGroup.Text>
-    //         @
-    //       </InputGroup.Text>
-    //       <Form.Control aria-label='Username' placeholder='Username'>
-          
-    //       </Form.Control>
-    //     </InputGroup>
-
-    //       <Button>мяу</Button>
-    //   </header>
-    // </div>
     <div className="App">
-
-      <Router>
-        <NaviBar/>
-          <Routes>
-            <Route  exact path="/"  element={<Home/>} />
-            <Route path="/account"  element={<Account/>} />
-            <Route path="/liked"  element={<Liked/>} />
-            {/* <Route path="/basket"  element={<Basket/>} /> */}
-            <Route path="*"  element={<NotFound/>} />
-            {/* <Route path="/add_a_hackathon"  element={<PlusHack/>} /> */}
-            <Route path="/position_page/:id"  element={<CardPage/>} />
-          </Routes>
-      </Router>
-      <Footer/>
+        <GlobalProvider>
+          <Router>
+            <NaviBar/>
+              <Routes>
+                <Route  exact path="/"  element={<Home/>} />
+                <Route path="/account"  element={<Account/>} />
+                <Route path="/liked"  element={<Liked/>} />
+                {/* <Route path="/basket"  element={<Basket/>} /> */}
+                <Route path="*"  element={<NotFound/>} />
+                {/* <Route path="/add_a_hackathon"  element={<PlusHack/>} /> */}
+                <Route path="/position_page/:id"  element={<CardPage/>} />
+              </Routes>
+          </Router>
+          <Footer/>
+        </GlobalProvider>
 
 
 
